@@ -150,6 +150,13 @@ class TestWindow implements Window {
   set onLocaleChanged(VoidCallback callback) {
     _window.onLocaleChanged = callback;
   }
+  
+  @override
+  String get initialLifecycleState => _initialLifecycleStateTestValue;
+  String _initialLifecycleStateTestValue;
+  set initialLifecycleStateTestValue(String state) {
+    _initialLifecycleStateTestValue = state;
+  }
 
   @override
   double get textScaleFactor => _textScaleFactorTestValue ?? _window.textScaleFactor;
