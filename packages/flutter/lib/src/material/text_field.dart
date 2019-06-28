@@ -563,7 +563,9 @@ class _TextFieldState extends State<TextField> with AutomaticKeepAliveClientMixi
 
     // If buildCounter was provided, use it to generate a counter widget.
     Widget counter;
-    final int currentLength = _effectiveController.value.text.runes.length;
+    final int currentLength = 
+      _effectiveController.value.text.runes.length -
+      (_effectiveController.value.composing.end - _effectiveController.value.composing.start);
     if (effectiveDecoration.counter == null
         && effectiveDecoration.counterText == null
         && widget.buildCounter != null) {
@@ -595,7 +597,7 @@ class _TextFieldState extends State<TextField> with AutomaticKeepAliveClientMixi
       semanticCounterText = localizations.remainingTextFieldCharacterCount(remaining);
 
       // Handle length exceeds maxLength
-      if (_effectiveController.value.text.runes.length > widget.maxLength) {
+      if (currentLength > widget.maxLength) {
         return effectiveDecoration.copyWith(
           errorText: effectiveDecoration.errorText ?? '',
           counterStyle: effectiveDecoration.errorStyle
