@@ -52,7 +52,7 @@ String? _findMatchId(List<String> idList, String idPattern) {
 DeviceDiscovery get devices => DeviceDiscovery();
 
 /// Device operating system the test is configured to test.
-enum DeviceOperatingSystem { android, androidArm, androidArm64 ,ios, fuchsia, fake }
+enum DeviceOperatingSystem { android, androidArm, androidArm64, androidEmulator, ios, fuchsia, fake }
 
 /// Device OS to test on.
 DeviceOperatingSystem deviceOperatingSystem = DeviceOperatingSystem.android;
@@ -67,6 +67,8 @@ abstract class DeviceDiscovery {
         return AndroidDeviceDiscovery(cpu: AndroidCPU.arm);
       case DeviceOperatingSystem.androidArm64:
         return AndroidDeviceDiscovery(cpu: AndroidCPU.arm64);
+      case DeviceOperatingSystem.androidEmulator:
+        return AndroidDeviceDiscovery(cpu: AndroidCPU.emulator);
       case DeviceOperatingSystem.ios:
         return IosDeviceDiscovery();
       case DeviceOperatingSystem.fuchsia:
@@ -179,6 +181,7 @@ abstract class Device {
 enum AndroidCPU {
   arm,
   arm64,
+  emulator,
 }
 
 class AndroidDeviceDiscovery implements DeviceDiscovery {
@@ -221,6 +224,8 @@ class AndroidDeviceDiscovery implements DeviceDiscovery {
         return device.isArm64();
       case AndroidCPU.arm:
         return device.isArm();
+      case AndroidCPU.emulator:
+        return device.isEmulator();
     }
   }
 
@@ -517,6 +522,10 @@ class AndroidDevice extends Device {
   Future<bool> isArm() async {
     final String cpuInfo = await shellEval('getprop', const <String>['ro.product.cpu.abi']);
     return cpuInfo.contains('armeabi');
+  }
+
+  Future<bool> isEmulator() async {
+    return deviceId.contains('emulator');
   }
 
   Future<void> _updateDeviceInfo() async {
