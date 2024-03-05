@@ -37,6 +37,7 @@ abstract class PlaceholderSpan extends InlineSpan {
   const PlaceholderSpan({
     this.alignment = ui.PlaceholderAlignment.bottom,
     this.baseline,
+    this.range,
     super.style,
   });
 
@@ -53,6 +54,11 @@ abstract class PlaceholderSpan extends InlineSpan {
   ///
   /// This is ignored when using other alignment modes.
   final TextBaseline? baseline;
+
+  /// The [TextRange] that this span replaces.
+  ///
+  /// This can be null if not used as part of an editable text field.
+  final TextRange? range;
 
   /// [PlaceholderSpan]s are flattened to a `0xFFFC` object replacement character in the
   /// plain text representation when `includePlaceholders` is true.

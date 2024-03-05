@@ -77,14 +77,14 @@ class WidgetSpan extends PlaceholderSpan {
     super.alignment,
     super.baseline,
     super.style,
-  }) : assert(child != null),
-       assert(
-         baseline != null || !(
-          identical(alignment, ui.PlaceholderAlignment.aboveBaseline) ||
-          identical(alignment, ui.PlaceholderAlignment.belowBaseline) ||
-          identical(alignment, ui.PlaceholderAlignment.baseline)
-        ),
-      );
+    super.range,
+  })  : assert(child != null),
+        assert(
+          baseline != null ||
+              !(identical(alignment, ui.PlaceholderAlignment.aboveBaseline) ||
+                  identical(alignment, ui.PlaceholderAlignment.belowBaseline) ||
+                  identical(alignment, ui.PlaceholderAlignment.baseline)),
+        );
 
   /// The widget to embed inline within text.
   final Widget child;
@@ -98,7 +98,8 @@ class WidgetSpan extends PlaceholderSpan {
   ///
   /// The `textScaleFactor` will be applied to the laid-out size of the widget.
   @override
-  void build(ui.ParagraphBuilder builder, { double textScaleFactor = 1.0, List<PlaceholderDimensions>? dimensions }) {
+  void build(ui.ParagraphBuilder builder,
+      {double textScaleFactor = 1.0, List<PlaceholderDimensions>? dimensions}) {
     assert(debugAssertIsValid());
     assert(dimensions != null);
     final bool hasStyle = style != null;
@@ -106,7 +107,8 @@ class WidgetSpan extends PlaceholderSpan {
       builder.pushStyle(style!.getTextStyle(textScaleFactor: textScaleFactor));
     }
     assert(builder.placeholderCount < dimensions!.length);
-    final PlaceholderDimensions currentDimensions = dimensions![builder.placeholderCount];
+    final PlaceholderDimensions currentDimensions =
+        dimensions![builder.placeholderCount];
     builder.addPlaceholder(
       currentDimensions.size.width,
       currentDimensions.size.height,
@@ -127,7 +129,8 @@ class WidgetSpan extends PlaceholderSpan {
   }
 
   @override
-  InlineSpan? getSpanForPositionVisitor(TextPosition position, Accumulator offset) {
+  InlineSpan? getSpanForPositionVisitor(
+      TextPosition position, Accumulator offset) {
     if (position.offset == offset.value) {
       return this;
     }
@@ -180,10 +183,10 @@ class WidgetSpan extends PlaceholderSpan {
     if (super != other) {
       return false;
     }
-    return other is WidgetSpan
-        && other.child == child
-        && other.alignment == alignment
-        && other.baseline == baseline;
+    return other is WidgetSpan &&
+        other.child == child &&
+        other.alignment == alignment &&
+        other.baseline == baseline;
   }
 
   @override
